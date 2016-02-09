@@ -1,0 +1,7 @@
+%% SU with additive noise
+clear all;
+clc;
+load 'noisedmetrics.mat'
+mean_su=mean(m_util,2);
+%max(m_util,[],2)
+avg_privacy=m_privac
