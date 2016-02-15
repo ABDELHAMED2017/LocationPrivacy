@@ -1,17 +1,16 @@
 clear all;
-clc;
 %% Initialize the required variables
 load 'coverage_area.mat';
 load 'boundaries.mat'
-%channels 0 (NA), 1 (PU operating), 2 (Available channel)
-channels=[0 1 2];
+%load 'SidesPolygon.mat'
 
-Nside_poly=Npoly;
+load 'AdditiveBoundar.mat';
+Nside_poly=8;
 d = zeros(Xgrids, Ygrids);
 totpathloss = zeros(Xgrids, Ygrids);
 Rxpower = zeros(Xgrids, Ygrids);
-changrid=zeros(Xgrids,Ygrids);
-tchangrid=zeros(Xgrids,Ygrids);
+changrid=(invhilb(Xgrids)<0)+1; %zeros(Xgrids,Ygrids);
+tchangrid=(invhilb(Xgrids)<0)+1;%zeros(Xgrids,Ygrids);
 pow = zeros(Xgrids, Ygrids);
 tpow = zeros(Xgrids, Ygrids);
 blank=zeros(Xgrids,Ygrids);
@@ -39,21 +38,21 @@ for i = 1:Xgrids
              if(d(i,j) > r_1)
                 pow(i,j)=1;
                 blank(i,j)=0;
-                changrid(i,j)=channels(2); %randi([0 1]);
+                %changrid(i,j)=channels(2); %randi([0 1]);
             else
                 pow(i,j)= 1;%round(rand()+0.3);
                 blank(i,j)=1;
-                changrid(i,j)=channels(1);
+                %changrid(i,j)=channels(1);
              end            
         else
             pow(i,j)=0;
             blank(i,j)=1;
-            changrid(i,j)=channels(1);
+            changrid(i,j)=0;
         end
      end
 end
 
-changrid(PUx,PUy)=channels(2);
+changrid(PUx,PUy)=1;
 
 %% Power, blanking and channel allocation for transfigured region
 for i = 1:Xgrids
@@ -62,28 +61,29 @@ for i = 1:Xgrids
              if(~inpolygon(i,j,X',Y'))
                 tpow(i,j)=1;
                 tblank(i,j)=0;
-                tchangrid(i,j)=channels(2);
+                %tchangrid(i,j)=channels(2);
             else
                 tpow(i,j)= 1;%round(rand()+0.3);
                 tblank(i,j)=1;
-                tchangrid(i,j)= channels(1);
+                %tchangrid(i,j)= channels(1);
                 
              end            
         else
             tpow(i,j)=0;
             tblank(i,j)=1;
-            tchangrid(i,j) = channels(1);
+            tchangrid(i,j) = 0;
         end
      end
 end
-tchangrid(PUx,PUy)=channels(2);
+tchangrid(PUx,PUy)=1;
 
 
 %% Save power profile and shadowing profile
-m = matfile('chan_assignment','Writable',true);
-tm= matfile('tchan_assignment','Writable',true);
+save('chan_assignment.mat','changrid');
+save('tchan_assignment.mat','tchangrid');
+%tm= matfile('tchan_assignment','Writable',true);
 save('databasecalc.mat','pow','blank');
 save('tdatabasecalc.mat','tpow','tblank');
 save('tfigloc.mat','x','y','X','Y');
-m.changrid=changrid;
-tm.tchangrid=tchangrid;
+%m.changrid=changrid;
+%tm.tchangrid=tchangrid;

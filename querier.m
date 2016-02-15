@@ -10,8 +10,8 @@ R_0=50;
 R_1=110;
 avg_pri=zeros(Trials,maxqueries+1);
 tavg_pri=zeros(Trials,maxqueries+1);
-ASC=zeros(1,Trials);
-tASC=zeros(1,Trials);
+%ASC=zeros(1,Trials);
+%tASC=zeros(1,Trials);
 for l=1:Trials
     l
 %% Initialize parameters
@@ -20,7 +20,6 @@ load 'coverage_area.mat';   %Read total grids and distance between grids form fi
 load 'PU_loc.mat';
 load 'boundaries.mat'
 load 'tfigloc.mat'
-
 %% Initialize inference probability
 p = k/(Xgrids*Ygrids)*ones(Xgrids,Ygrids);
 tp = k/(Xgrids*Ygrids)*ones(Xgrids,Ygrids);
@@ -35,9 +34,9 @@ queries_y = zeros(maxqueries,1);
 
 SU_loss_total = 0;
 %% params for ASC
-zeta=2;
-tau=4;
-BandWidth=5e6;
+%zeta=2;
+%tau=4;
+%BandWidth=5e6;
 
 %ASC(1)=AreaSumCap(BandWidth,zeta,tau);
 
@@ -197,7 +196,7 @@ end
 SU_loss_average = SU_loss_total/maxqueries;
 avgpri(l,:)=privacy;
 tavgpri(l,:)=tprivacy;
-[ASC(l), tASC(l)]= AreaSumCap(BandWidth,zeta,tau);
+%[ASC(l), tASC(l)]= AreaSumCap(BandWidth,zeta,tau);
 end
 
 figure(1)
