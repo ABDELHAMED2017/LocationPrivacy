@@ -1,16 +1,21 @@
 clear all;
 %% Initialize the required variables
 load 'coverage_area.mat';
-load 'boundaries.mat'
-%load 'SidesPolygon.mat'
+load 'boundaries.mat' %has distances r_0, r_1
+%load 'SidesPolygon.mat' % stores the list of transfigured ploygon vertices 
+%load 'AdditiveBoundar.mat'; %for calculating ASC with additive noise
 
-load 'AdditiveBoundar.mat';
 Nside_poly=8;
 d = zeros(Xgrids, Ygrids);
 totpathloss = zeros(Xgrids, Ygrids);
 Rxpower = zeros(Xgrids, Ygrids);
-changrid=(invhilb(Xgrids)<0)+1; %zeros(Xgrids,Ygrids);
-tchangrid=(invhilb(Xgrids)<0)+1;%zeros(Xgrids,Ygrids);
+
+%changrid=(invhilb(Xgrids)>0)+1; %zeros(Xgrids,Ygrids);
+%tchangrid=(invhilb(Xgrids)>0)+1;%zeros(Xgrids,Ygrids);
+
+changrid=-1*ones(Xgrids,Ygrids);
+tchangrid=-1*ones(Xgrids,Ygrids);
+
 pow = zeros(Xgrids, Ygrids);
 tpow = zeros(Xgrids, Ygrids);
 blank=zeros(Xgrids,Ygrids);
@@ -47,7 +52,7 @@ for i = 1:Xgrids
         else
             pow(i,j)=0;
             blank(i,j)=1;
-            changrid(i,j)=0;
+            changrid(i,j)=0; %uncomment this to change back to checkerboard
         end
      end
 end
@@ -71,7 +76,7 @@ for i = 1:Xgrids
         else
             tpow(i,j)=0;
             tblank(i,j)=1;
-            tchangrid(i,j) = 0;
+            tchangrid(i,j) = 0; %uncomment this to change back to checkerbo
         end
      end
 end
@@ -79,11 +84,12 @@ tchangrid(PUx,PUy)=1;
 
 
 %% Save power profile and shadowing profile
-save('chan_assignment.mat','changrid');
-save('tchan_assignment.mat','tchangrid');
-%tm= matfile('tchan_assignment','Writable',true);
+%save('chan_assignment.mat','changrid'); % with checker
+%save('tchan_assignment.mat','tchangrid'); % with checker
+m=matfile('chan_assignment','Writable',true);
+tm= matfile('tchan_assignment','Writable',true);
 save('databasecalc.mat','pow','blank');
 save('tdatabasecalc.mat','tpow','tblank');
 save('tfigloc.mat','x','y','X','Y');
-%m.changrid=changrid;
-%tm.tchangrid=tchangrid;
+m.changrid=changrid;
+tm.tchangrid=tchangrid;

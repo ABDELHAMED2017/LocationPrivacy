@@ -1,5 +1,7 @@
 %% while running this script make sure, boundaries.mat is not commented in
 %   generatepowermap. Also see Npoly in generatepowermap
+%comment additive boundaries file in generate powermap. conflict with the
+%defined boundary regions.
 clear all;
 clc;
 N=7;

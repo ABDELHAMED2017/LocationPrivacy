@@ -44,7 +44,7 @@ for i = 1:Xgrids
                 blank_dur=0;
             end
         
-        SINR= (P_ts*chan_pow/ P_loss)./(Noise_pow*BandWidth + I_ps + I_ss);
+        SINR= (P_ts*chan_pow/P_loss)./(Noise_pow*BandWidth + I_ps + I_ss);
         ASC = ASC + BandWidth* (log2(1 + SINR))* (1- blank_dur/tau); 
         end               
     end
@@ -74,7 +74,7 @@ for i = 1:Xgrids
                 tblank_dur=0;
             end
         
-        SINR= (P_ts*tchan_pow/ P_loss)./(Noise_pow*BandWidth + I_ps + I_ss);
+        SINR= (P_ts*tchan_pow/P_loss)./(Noise_pow*BandWidth + I_ps + I_ss);
         tASC = tASC + BandWidth* (log2(1 + SINR))* (1- tblank_dur/tau); 
         end               
     end
